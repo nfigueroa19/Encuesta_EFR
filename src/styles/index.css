@@ -1,0 +1,35 @@
+/* Fuentes autoalojadas: una petición a Google Fonts expondría la IP del encuestado (DESIGN.md). */
+@import "@fontsource/atkinson-hyperlegible-next/400.css";
+@import "@fontsource/atkinson-hyperlegible-next/600.css";
+@import "@fontsource/atkinson-hyperlegible-next/700.css";
+@import "@fontsource/atkinson-hyperlegible-mono/500.css";
+@import "@fontsource/fraunces/600.css";
+
+/* @heroui/styles ya importa tailwindcss. */
+@import "@heroui/styles";
+@import "./tokens.css";
+@import "./componentes.css";
+
+@layer base {
+  body {
+    @apply bg-background font-sans text-body text-foreground antialiased;
+    font-feature-settings: normal;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* AGENTS.md §5: con movimiento reducido, los cambios de estado son instantáneos. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

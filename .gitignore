@@ -1,0 +1,24 @@
+node_modules/
+dist/
+*.log
+.vite/
+
+# Secretos: el proyecto no usa archivos de entorno (decision-gestion-secretos-sin-env)
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+*.pem
+*.key
+
+# El repo solo lleva lo que Render necesita para construir la app (despliegue-render-efr).
+# La bóveda, la gobernanza de agentes y los logos originales se quedan en la carpeta local.
+/_Segundo_Cerebro/
+/.obsidian/
+/.claude/
+/.mcp.json
+/AGENTS.md
+/CLAUDE.md
+/DESIGN.md
+/*.png
+/scripts/

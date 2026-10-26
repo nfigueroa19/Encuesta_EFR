@@ -1,0 +1,146 @@
+/*
+ * Ajustes de HeroUI a DESIGN.md: botones de 48 px y radio de 8 px, objetivos táctiles
+ * de al menos 44 px (AGENTS.md §5) y opción seleccionada en el primario sólido.
+ */
+@layer components {
+  .button {
+    height: 48px;
+    padding-inline: 20px;
+    border-radius: var(--radius-md);
+    font-size: var(--text-label);
+    font-weight: var(--text-label--font-weight);
+    line-height: var(--text-label--line-height);
+    transition:
+      transform var(--motion-fast) var(--ease-standard),
+      background-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .button--outline {
+    --button-bg: var(--surface);
+    --button-fg: var(--accent);
+    border-color: var(--border);
+  }
+
+  .toggle-button {
+    height: 44px;
+    min-width: 44px;
+    border-radius: var(--radius-md);
+    font-size: var(--text-body-sm);
+    font-weight: var(--text-label--font-weight);
+    border: 1px solid var(--border);
+    --toggle-button-bg: var(--surface);
+    --toggle-button-fg: var(--foreground);
+    --toggle-button-bg-selected: var(--accent);
+    --toggle-button-bg-selected-hover: var(--accent-hover);
+    --toggle-button-bg-selected-pressed: var(--accent-hover);
+    --toggle-button-fg-selected: var(--accent-foreground);
+  }
+
+  .alert {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  /*
+   * Tipografía de campos con tokens de DESIGN.md. Va en CSS y no como utilidades en className:
+   * tailwind-merge, dentro de HeroUI, descarta text-body o text-body-sm al verlas junto a una utilidad de color.
+   */
+  .description,
+  .field-error {
+    font-size: var(--text-body-sm);
+    line-height: var(--text-body-sm--line-height);
+  }
+
+  .field-error {
+    color: var(--danger);
+  }
+
+  .alert__title {
+    font-size: var(--text-body-sm);
+    font-weight: var(--text-label--font-weight);
+  }
+
+  /* 17 px en campos de texto; además evita el zoom automático de iOS por debajo de 16 px. */
+  .input,
+  .textarea {
+    font-size: var(--text-body);
+  }
+
+  .etiqueta-pregunta {
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: var(--text-body--line-height);
+    color: var(--foreground);
+  }
+
+  /* DESIGN.md likert-option: superficie con borde, 48 px de alto; seleccionada en primario sólido. */
+  .opcion-respuesta {
+    width: 100%;
+  }
+
+  .opcion-respuesta :is(.radio__content, .checkbox__content) {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
+    gap: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--foreground);
+    font-size: var(--text-body-sm);
+    font-weight: 400;
+    line-height: var(--text-body-sm--line-height);
+    transition:
+      background-color var(--motion-base) var(--ease-standard),
+      border-color var(--motion-base) var(--ease-standard),
+      color var(--motion-base) var(--ease-standard);
+  }
+
+
+  .opcion-respuesta:is([data-selected="true"], [data-selected]) :is(.radio__content, .checkbox__content) {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  .opcion-respuesta [data-focus-visible="true"] {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* Borde explícito: HeroUI lo toma de --border-width-field, que el tema deja en 0 (WCAG 1.4.11). */
+  .opcion-respuesta :is(.radio__control, .checkbox__control) {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border);
+  }
+
+  /* Fondo claro para que la hoja de la animación 1 contraste con el primario de la opción. */
+  .opcion-respuesta.radio[data-selected] .radio__control {
+    background: var(--surface);
+    border: 2px solid var(--accent-foreground);
+  }
+
+  /* En escritorio las cinco opciones Likert van en columnas, con el control sobre el texto. */
+  @media (width >= 64rem) {
+    .opcion-respuesta--columna .radio__content {
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      height: 100%;
+    }
+  }
+
+  /* Logos con texto azul marino: versión blanca en el tema oscuro (ui/logo-institucional.tsx). */
+  .logo-tema-oscuro {
+    display: none;
+  }
+
+  [data-theme="dark"] .logo-tema-claro {
+    display: none;
+  }
+
+  [data-theme="dark"] .logo-tema-oscuro {
+    display: block;
+  }
+}

@@ -1,0 +1,53 @@
+# Sitio estático de la encuesta EFR en la CDN de Render. El backend es Supabase (RPC + RLS):
+# Render solo entrega index.html y los recursos de dist/ (despliegue-render-efr).
+services:
+  - type: web
+    runtime: static
+    name: encuesta-efr
+    repo: https://github.com/nfigueroa19/Encuesta_EFR
+    branch: main
+    autoDeployTrigger: commit
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    previews:
+      generation: "off"
+    domains:
+      - efr.hosusana.com
+    envVars:
+      - key: NODE_VERSION
+        value: "24.17.0"
+      # Valores públicos; se piden al crear el Blueprint y vite.config.ts los valida en el build.
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_PUBLISHABLE_KEY
+        sync: false
+    headers:
+      # AGENTS.md §2. El hash de style-src autoriza el <style> fijo que inyecta react-aria
+      # (id react-aria-pressable-style); si una actualización lo cambia, la consola lo reporta.
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'none'; script-src 'self'; style-src 'self' 'sha256-38RhXrc7EdReTKsOm23ZPOCUgniTUUcjky8QOOrQx6o='; img-src 'self' data:; font-src 'self'; connect-src https://fbujqbeylertkpcbcygd.supabase.co; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"
+      - path: /*
+        name: Strict-Transport-Security
+        value: max-age=31536000; includeSubDomains
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: no-referrer
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Cross-Origin-Opener-Policy
+        value: same-origin
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
