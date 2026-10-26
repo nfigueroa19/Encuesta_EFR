@@ -3,6 +3,7 @@ import { useState, type SyntheticEvent } from 'react';
 import type { ErrorAcceso } from '../../domain/resultados';
 import { LogoBienvenida } from '../logo-bienvenida';
 import { MarcoPaso } from '../marco-paso';
+import { SIN_AUTOCOMPLETADO } from '../sin-autocompletado';
 
 const MENSAJES_CAMPO = {
   'cedula-invalida': 'Escriba solo los números de su cédula, entre 5 y 11 dígitos.',
@@ -27,10 +28,10 @@ export function PantallaAcceso({ pendiente, error, onIngresar }: PropsPantallaAc
       <p className="mx-auto max-w-[60ch] text-center">
         Encuesta para el personal de planta del Hospital Susana López de Valencia. Ingrese su número de cédula para comenzar.
       </p>
-      <form onSubmit={alEnviar} noValidate className="mx-auto flex w-full max-w-sm flex-col gap-4">
+      <form onSubmit={alEnviar} noValidate {...SIN_AUTOCOMPLETADO} className="mx-auto flex w-full max-w-sm flex-col gap-4">
         <TextField value={cedula} onChange={setCedula} isInvalid={errorCampo !== null} fullWidth>
           <Label>Número de cédula</Label>
-          <Input inputMode="numeric" autoComplete="off" maxLength={15} />
+          <Input inputMode="numeric" maxLength={15} {...SIN_AUTOCOMPLETADO} />
           <FieldError>{errorCampo === null ? null : MENSAJES_CAMPO[errorCampo]}</FieldError>
         </TextField>
         <Button type="submit" isPending={pendiente} fullWidth>Ingresar</Button>

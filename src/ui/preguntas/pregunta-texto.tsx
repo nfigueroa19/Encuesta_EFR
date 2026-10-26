@@ -1,4 +1,5 @@
 import { Description, FieldError, Input, Label, TextArea, TextField } from '@heroui/react';
+import { SIN_AUTOCOMPLETADO } from '../sin-autocompletado';
 
 interface PropsPreguntaTexto {
   readonly id: string;
@@ -24,7 +25,7 @@ export function PreguntaTexto({ id, etiqueta, valor, minimo, limite, multilinea,
       className="flex flex-col gap-2 rounded-lg bg-surface p-4"
     >
       <Label className="etiqueta-pregunta">{etiqueta}</Label>
-      {multilinea ? <TextArea rows={4} className="min-h-28" /> : <Input />}
+      {multilinea ? <TextArea rows={4} className="min-h-28" {...SIN_AUTOCOMPLETADO} /> : <Input {...SIN_AUTOCOMPLETADO} />}
       <Description>
         Mínimo {minimo} caracteres · <span className="font-mono text-numeric">{valor.trim().length}</span> de{' '}
         <span className="font-mono text-numeric">{limite}</span>
