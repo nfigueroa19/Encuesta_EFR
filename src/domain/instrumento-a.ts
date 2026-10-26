@@ -26,6 +26,18 @@ const CARACTERIZACION: readonly Pregunta[] = [
     { id: 'adultos-mayores', texto: 'Adultos mayores' }, { id: 'familiar-necesidad-cuidado', texto: 'Familiar con necesidad de cuidado' },
     { id: 'ninguna', texto: 'Ninguna' }, { id: 'otra', texto: 'Otra' },
   ] },
+  {
+    tipo: 'multiple', id: 'A-C-11', enunciado: '¿Qué edades tienen sus hijos menores?',
+    exclusiva: 'ninguna', visibleSi: { pregunta: 'A-C-05', opcion: 'hijos-menores' }, opciones: [
+      { id: '0-a-5', texto: '0 a 5 años' }, { id: '6-a-11', texto: '6 a 11 años' }, { id: '12-a-17', texto: '12 a 17 años' },
+    ],
+  },
+  {
+    tipo: 'multiple', id: 'A-C-12', enunciado: '¿Qué edades tienen los adultos mayores a su cuidado?',
+    exclusiva: 'ninguna', visibleSi: { pregunta: 'A-C-05', opcion: 'adultos-mayores' }, opciones: [
+      { id: '60-a-69', texto: '60 a 69 años' }, { id: '70-a-79', texto: '70 a 79 años' }, { id: '80-o-mas', texto: '80 años o más' },
+    ],
+  },
   { tipo: 'unica', id: 'A-C-06', enunciado: '¿Tiene personas que dependan económicamente de usted?', opciones: [
     { id: 'si', texto: 'Sí' }, { id: 'no', texto: 'No' },
   ] },
@@ -132,7 +144,7 @@ export const SECCIONES_INSTRUMENTO_A: readonly Seccion[] = [
   {
     id: 'caracterizacion',
     titulo: 'Datos de caracterización',
-    indicacion: 'Estos datos no generan puntaje y se analizan únicamente de manera agregada.',
+    indicacion: null,
     dimension: null,
     preguntas: CARACTERIZACION,
   },
@@ -140,7 +152,7 @@ export const SECCIONES_INSTRUMENTO_A: readonly Seccion[] = [
   {
     id: 'abiertas',
     titulo: 'Preguntas abiertas',
-    indicacion: 'Respuestas opcionales. No escriba nombres de otras personas ni datos que permitan identificarlas.',
+    indicacion: 'Todas las respuestas son obligatorias (mínimo 10 caracteres). No escriba nombres de otras personas ni datos que permitan identificarlas.',
     dimension: null,
     preguntas: ABIERTAS.map((enunciado, posicion) => {
       const numero = PRIMERA_ABIERTA + posicion;

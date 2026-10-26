@@ -1,4 +1,4 @@
-import { LogoInstitucional } from './logo-institucional';
+import type { ReactNode } from 'react';
 import { ProgresoHojas } from './progreso-hojas';
 
 export interface Progreso {
@@ -9,17 +9,19 @@ export interface Progreso {
 interface PropsEncabezado {
   // null fuera del cuestionario (acceso, introducción, cierre).
   readonly progreso: Progreso | null;
+  readonly apariencia: ReactNode;
 }
 
-export function Encabezado({ progreso }: PropsEncabezado) {
+// El logo vive solo en la pantalla de acceso; el encabezado nombra la encuesta.
+export function Encabezado({ progreso, apariencia }: PropsEncabezado) {
   return (
     <header className="sticky top-0 z-40 border-b border-separator bg-surface shadow-flotante">
       <div className="mx-auto flex max-w-content flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-2 md:px-6">
-        <div className="flex items-center gap-4">
-          <LogoInstitucional variante="encabezado" className="h-10 w-auto md:h-12" />
-          <span className="hidden border-l border-separator pl-4 text-label text-titulo sm:block">Diagnóstico EFR</span>
+        <span className="text-heading text-titulo">Diagnóstico EFR</span>
+        <div className="flex items-center gap-x-6 gap-y-2">
+          {progreso === null ? null : <ProgresoHojas completadas={progreso.completadas} total={progreso.total} />}
+          {apariencia}
         </div>
-        {progreso === null ? null : <ProgresoHojas completadas={progreso.completadas} total={progreso.total} />}
       </div>
     </header>
   );

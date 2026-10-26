@@ -1,4 +1,4 @@
-import { esObligatoria, type Pregunta, type Seccion } from './cuestionario';
+import { MINIMO_TEXTO, type CondicionVisibilidad, type Pregunta, type Seccion } from './cuestionario';
 
 export type ValorRespuesta =
   | { readonly tipo: 'opcion'; readonly opcion: string }
@@ -7,25 +7,42 @@ export type ValorRespuesta =
 
 export type Respuestas = ReadonlyMap<string, ValorRespuesta>;
 
+// Quitar la opción marcada: una lista vacía cuenta como sin responder y no viaja en el envío.
+export const SIN_OPCION: ValorRespuesta = { tipo: 'opciones', opciones: [] };
+
 export const SIN_RESPUESTAS: Respuestas = new Map();
 
-export function esVisible(pregunta: Pregunta, respuestas: Respuestas): boolean {
-  if (pregunta.tipo !== 'texto-corto' || pregunta.visibleSi === null) return true;
-  const condicion = respuestas.get(pregunta.visibleSi.pregunta);
-  return condicion?.tipo === 'opcion' && condicion.opcion === pregunta.visibleSi.opcion;
+function cumpleCondicion(condicion: CondicionVisibilidad, respuestas: Respuestas): boolean {
+  const valor = respuestas.get(condicion.pregunta);
+  if (valor?.tipo === 'opcion') return valor.opcion === condicion.opcion;
+  return valor?.tipo === 'opciones' && valor.opciones.includes(condicion.opcion);
 }
 
-function estaRespondida(valor: ValorRespuesta | undefined): boolean {
+export function esVisible(pregunta: Pregunta, respuestas: Respuestas): boolean {
+  if (pregunta.tipo === 'likert' || pregunta.tipo === 'texto-largo') return true;
+  return pregunta.visibleSi === undefined || pregunta.visibleSi === null || cumpleCondicion(pregunta.visibleSi, respuestas);
+}
+
+const minimoTexto = (pregunta: Pregunta) => (pregunta.tipo === 'texto-corto' || pregunta.tipo === 'texto-largo' ? MINIMO_TEXTO[pregunta.tipo] : 1);
+
+// Toda pregunta visible es obligatoria; los textos exigen un mínimo de caracteres.
+export function estaRespondida(pregunta: Pregunta, valor: ValorRespuesta | undefined): boolean {
   if (valor === undefined) return false;
   if (valor.tipo === 'opciones') return valor.opciones.length > 0;
-  if (valor.tipo === 'texto') return valor.texto.trim().length > 0;
+  if (valor.tipo === 'texto') return valor.texto.trim().length >= minimoTexto(pregunta);
   return true;
 }
 
+// Hay algo escrito o marcado que se perdería al cerrar la página.
+export function hayRespuestas(respuestas: Respuestas): boolean {
+  return [...respuestas.values()].some((valor) => {
+    if (valor.tipo === 'opciones') return valor.opciones.length > 0;
+    return valor.tipo === 'texto' ? valor.texto.trim().length > 0 : true;
+  });
+}
+
 export function preguntasFaltantes(seccion: Seccion, respuestas: Respuestas): readonly Pregunta[] {
-  return seccion.preguntas.filter(
-    (pregunta) => esObligatoria(pregunta) && esVisible(pregunta, respuestas) && !estaRespondida(respuestas.get(pregunta.id)),
-  );
+  return seccion.preguntas.filter((pregunta) => esVisible(pregunta, respuestas) && !estaRespondida(pregunta, respuestas.get(pregunta.id)));
 }
 
 export function seccionCompleta(seccion: Seccion, respuestas: Respuestas): boolean {
@@ -56,7 +73,7 @@ export function respuestasParaEnvio(secciones: readonly Seccion[], respuestas: R
   const envio = new Map<string, ValorRespuesta>();
   for (const pregunta of secciones.flatMap((seccion) => seccion.preguntas)) {
     const valor = respuestas.get(pregunta.id);
-    if (valor === undefined || !estaRespondida(valor) || !esVisible(pregunta, respuestas)) continue;
+    if (valor === undefined || !estaRespondida(pregunta, valor) || !esVisible(pregunta, respuestas)) continue;
     envio.set(pregunta.id, valor.tipo === 'texto' ? { tipo: 'texto', texto: valor.texto.trim() } : valor);
   }
   return envio;

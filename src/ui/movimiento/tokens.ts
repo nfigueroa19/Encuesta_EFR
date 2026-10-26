@@ -1,6 +1,4 @@
-import { cubicBezier } from 'animejs';
-
-// Espejo en milisegundos de la tabla Motion de DESIGN.md, para las animaciones con Anime.js.
+// Espejo en milisegundos de la tabla Motion de DESIGN.md, para las animaciones con Motion.
 // Los mismos valores viven como variables CSS en styles/tokens.css.
 export const MOVIMIENTO = {
   rapido: 120,
@@ -10,6 +8,10 @@ export const MOVIMIENTO = {
   escalonadoHojas: 40,
 } as const;
 
-export const CURVA_ESTANDAR = cubicBezier(0.2, 0, 0, 1);
+// Motion trabaja en segundos.
+export const segundos = (milisegundos: number) => milisegundos / 1000;
+
+// ease-standard de DESIGN.md como curva Bézier para Motion.
+export const CURVA_ESTANDAR = [0.2, 0, 0, 1] as const;
 
 export const CONSULTA_MOVIMIENTO_REDUCIDO = '(prefers-reduced-motion: reduce)';

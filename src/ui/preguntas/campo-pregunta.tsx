@@ -1,6 +1,6 @@
-import { LIMITE_TEXTO, type Pregunta } from '../../domain/cuestionario';
+import { LIMITE_TEXTO, MINIMO_TEXTO, type Pregunta } from '../../domain/cuestionario';
 import { ESCALA_LIKERT } from '../../domain/escala-likert';
-import type { ValorRespuesta } from '../../domain/respuestas';
+import { SIN_OPCION, type ValorRespuesta } from '../../domain/respuestas';
 import { PreguntaMultiple } from './pregunta-multiple';
 import { PreguntaOpciones } from './pregunta-opciones';
 import { PreguntaTexto } from './pregunta-texto';
@@ -17,7 +17,9 @@ const conNumero = (numero: number | null, enunciado: string) => (numero === null
 export function CampoPregunta({ pregunta, valor, invalida, onResponder }: PropsCampoPregunta) {
   const comunes = { id: pregunta.id, invalida };
   const opcion = valor?.tipo === 'opcion' ? valor.opcion : null;
-  const elegir = (elegida: string) => { onResponder(pregunta, { tipo: 'opcion', opcion: elegida }); };
+  const elegir = (elegida: string | null) => {
+    onResponder(pregunta, elegida === null ? SIN_OPCION : { tipo: 'opcion', opcion: elegida });
+  };
   const escribir = (texto: string) => { onResponder(pregunta, { tipo: 'texto', texto }); };
   const texto = valor?.tipo === 'texto' ? valor.texto : '';
   switch (pregunta.tipo) {
@@ -32,8 +34,8 @@ export function CampoPregunta({ pregunta, valor, invalida, onResponder }: PropsC
           onCambiar={(opciones) => { onResponder(pregunta, { tipo: 'opciones', opciones }); }} />
       );
     case 'texto-corto':
-      return <PreguntaTexto id={pregunta.id} etiqueta={pregunta.enunciado} valor={texto} limite={LIMITE_TEXTO['texto-corto']} multilinea={false} onCambiar={escribir} />;
+      return <PreguntaTexto {...comunes} etiqueta={pregunta.enunciado} valor={texto} minimo={MINIMO_TEXTO['texto-corto']} limite={LIMITE_TEXTO['texto-corto']} multilinea={false} onCambiar={escribir} />;
     case 'texto-largo':
-      return <PreguntaTexto id={pregunta.id} etiqueta={conNumero(pregunta.numero, pregunta.enunciado)} valor={texto} limite={LIMITE_TEXTO['texto-largo']} multilinea onCambiar={escribir} />;
+      return <PreguntaTexto {...comunes} etiqueta={conNumero(pregunta.numero, pregunta.enunciado)} valor={texto} minimo={MINIMO_TEXTO['texto-largo']} limite={LIMITE_TEXTO['texto-largo']} multilinea onCambiar={escribir} />;
   }
 }

@@ -1,41 +1,25 @@
-import { animate, createScope, stagger, type AnimationParams } from 'animejs';
+import { animate, stagger } from 'motion';
 import { useEffect, useRef } from 'react';
-import { CONSULTA_MOVIMIENTO_REDUCIDO, CURVA_ESTANDAR, MOVIMIENTO } from './tokens';
+import { CONSULTA_MOVIMIENTO_REDUCIDO, CURVA_ESTANDAR, MOVIMIENTO, segundos } from './tokens';
 
-// DESIGN.md Motion 3 (despliegue en la introducción) y Motion 5 (convergencia en la confirmación final).
-// Una sola vez al montar; revert() restaura los estilos al desmontar; con movimiento reducido no se anima.
-const PARAMETROS = {
-  despliegue: {
-    opacity: [0, 1],
-    scale: [0.6, 1],
-    translateY: [12, 0],
-    duration: MOVIMIENTO.lento,
-    delay: stagger(MOVIMIENTO.escalonadoHojas),
-  },
-  convergencia: {
-    opacity: [0, 1],
-    translateY: [-48, 0],
-    scale: [1.4, 1],
-    duration: MOVIMIENTO.convergencia,
-    delay: stagger(MOVIMIENTO.escalonadoHojas, { from: 'center' }),
-  },
-} satisfies Record<string, AnimationParams>;
-
-export type AnimacionHojas = keyof typeof PARAMETROS;
-
-export function useAnimacionHojas<T extends HTMLElement>(animacion: AnimacionHojas) {
+// DESIGN.md Motion 5: en la confirmación final las seis hojas convergen una sola vez.
+// cancel() al desmontar; con movimiento reducido no se anima.
+export function useConvergenciaHojas<T extends HTMLElement>() {
   const raiz = useRef<T>(null);
 
   useEffect(() => {
-    const ambito = createScope({
-      root: raiz,
-      mediaQueries: { reducido: CONSULTA_MOVIMIENTO_REDUCIDO },
-    }).add((self) => {
-      if (self?.matches.reducido) return;
-      animate('.hoja-abanico', { ...PARAMETROS[animacion], ease: CURVA_ESTANDAR });
-    });
-    return () => { ambito.revert(); };
-  }, [animacion]);
+    if (raiz.current === null || window.matchMedia(CONSULTA_MOVIMIENTO_REDUCIDO).matches) return undefined;
+    const control = animate(
+      raiz.current.querySelectorAll('.hoja-abanico'),
+      { opacity: [0, 1], y: [-48, 0], scale: [1.4, 1] },
+      {
+        duration: segundos(MOVIMIENTO.convergencia),
+        delay: stagger(segundos(MOVIMIENTO.escalonadoHojas), { from: 'center' }),
+        ease: CURVA_ESTANDAR,
+      },
+    );
+    return () => { control.cancel(); };
+  }, []);
 
   return raiz;
 }

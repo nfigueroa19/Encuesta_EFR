@@ -11,6 +11,15 @@
 @import "./componentes.css";
 
 @layer base {
+  /* Tamaño de texto elegido en el panel de apariencia; todo el diseño está en rem y escala con la raíz. */
+  html[data-tamano-texto="grande"] {
+    font-size: 112.5%;
+  }
+
+  html[data-tamano-texto="muy-grande"] {
+    font-size: 125%;
+  }
+
   body {
     @apply bg-background font-sans text-body text-foreground antialiased;
     font-feature-settings: normal;

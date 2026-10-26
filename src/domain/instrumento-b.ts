@@ -21,7 +21,7 @@ const PREGUNTAS_LIDERES: readonly string[] = [
 export const SECCION_LIDERES: Seccion = {
   id: 'lideres',
   titulo: 'Voz de líderes y dirección',
-  indicacion: 'Respuestas opcionales. No escriba nombres de otras personas ni datos que permitan identificarlas.',
+  indicacion: 'Todas las respuestas son obligatorias (mínimo 10 caracteres). No escriba nombres de otras personas ni datos que permitan identificarlas.',
   dimension: null,
   preguntas: PREGUNTAS_LIDERES.map((enunciado, indice) => ({
     tipo: 'texto-largo',

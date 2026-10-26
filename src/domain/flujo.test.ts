@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { PASO_INICIAL, transicion, type Paso } from './flujo';
+import { clavePaso, PASO_INICIAL, pasoDesdeClave, transicion, type Paso } from './flujo';
 
 const TOTAL = 8;
 
@@ -33,5 +33,24 @@ describe('transicion', () => {
       expect(transicion(paso, { tipo: 'ya-respondio' }, TOTAL)).toEqual({ tipo: 'ya-respondio' });
     }
     expect(transicion({ tipo: 'seccion', indice: 1 }, { tipo: 'envio-registrado' }, TOTAL)).toEqual({ tipo: 'seccion', indice: 1 });
+  });
+});
+
+describe('historial del navegador', () => {
+  it('ida y vuelta entre clave y paso', () => {
+    const pasos: Paso[] = [{ tipo: 'introduccion' }, { tipo: 'seccion', indice: 3 }, { tipo: 'decision-lider' }, { tipo: 'lideres' }];
+    for (const paso of pasos) expect(pasoDesdeClave(clavePaso(paso), 7)).toEqual(paso);
+  });
+
+  it('rechaza claves desconocidas, fuera de rango o de pasos finales', () => {
+    for (const clave of ['seccion-7', 'seccion--1', 'enviado', 'ya-respondio', '../x', 3, null, undefined]) {
+      expect(pasoDesdeClave(clave, 7)).toBeNull();
+    }
+  });
+
+  it('ir-a solo actúa dentro del cuestionario, no tras el envío', () => {
+    const destino: Paso = { tipo: 'seccion', indice: 1 };
+    expect(transicion({ tipo: 'seccion', indice: 4 }, { tipo: 'ir-a', paso: destino }, 7)).toEqual(destino);
+    expect(transicion({ tipo: 'enviado' }, { tipo: 'ir-a', paso: destino }, 7)).toEqual({ tipo: 'enviado' });
   });
 });

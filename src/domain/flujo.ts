@@ -12,6 +12,7 @@ export type Evento =
   | { readonly tipo: 'lectura-confirmada' }
   | { readonly tipo: 'siguiente' }
   | { readonly tipo: 'anterior' }
+  | { readonly tipo: 'ir-a'; readonly paso: Paso }
   | { readonly tipo: 'continuar-como-lider' }
   | { readonly tipo: 'envio-registrado' }
   | { readonly tipo: 'ya-respondio' };
@@ -37,6 +38,20 @@ function anterior(paso: Paso, totalSecciones: number): Paso {
   }
 }
 
+// Pasos del cuestionario a los que se puede volver con el botón Atrás del navegador.
+const navegable = (paso: Paso) => paso.tipo === 'introduccion' || paso.tipo === 'seccion' || paso.tipo === 'decision-lider' || paso.tipo === 'lideres';
+
+// Clave estable del paso: identifica la pantalla y el estado que se guarda en el historial del navegador.
+export const clavePaso = (paso: Paso) => (paso.tipo === 'seccion' ? `seccion-${String(paso.indice)}` : paso.tipo);
+
+// Reconstruye un paso desde el historial del navegador. Solo acepta claves conocidas: nunca se confía en el valor tal cual.
+export function pasoDesdeClave(clave: unknown, totalSecciones: number): Paso | null {
+  if (typeof clave !== 'string') return null;
+  const indice = /^seccion-(\d+)$/.exec(clave)?.[1];
+  if (indice !== undefined) return Number(indice) < totalSecciones ? { tipo: 'seccion', indice: Number(indice) } : null;
+  return clave === 'introduccion' || clave === 'decision-lider' || clave === 'lideres' ? { tipo: clave } : null;
+}
+
 const enviable = (paso: Paso) => paso.tipo === 'decision-lider' || paso.tipo === 'lideres';
 
 // Un evento que no corresponde al paso actual no cambia nada.
@@ -48,6 +63,8 @@ export function transicion(paso: Paso, evento: Evento, totalSecciones: number): 
       return siguiente(paso, totalSecciones);
     case 'anterior':
       return anterior(paso, totalSecciones);
+    case 'ir-a':
+      return navegable(paso) ? evento.paso : paso;
     case 'continuar-como-lider':
       return paso.tipo === 'decision-lider' ? { tipo: 'lideres' } : paso;
     case 'envio-registrado':

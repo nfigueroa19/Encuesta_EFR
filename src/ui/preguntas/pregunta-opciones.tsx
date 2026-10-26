@@ -1,6 +1,6 @@
 import { FieldError, Label, Radio, RadioGroup } from '@heroui/react';
 import type { Opcion } from '../../domain/cuestionario';
-import { Hoja } from '../hoja';
+import { FlorLoto } from '../flor-loto';
 
 interface PropsPreguntaOpciones {
   readonly id: string;
@@ -10,7 +10,8 @@ interface PropsPreguntaOpciones {
   readonly invalida: boolean;
   // likert: matriz de cinco columnas en escritorio (DESIGN.md Layout); lista: rejilla flexible.
   readonly disposicion: 'likert' | 'lista';
-  readonly onCambiar: (opcion: string) => void;
+  // null: la persona quitó la opción marcada.
+  readonly onCambiar: (opcion: string | null) => void;
 }
 
 const REJILLA = { likert: 'grid gap-2 lg:grid-cols-5', lista: 'grid gap-2 sm:grid-cols-2 lg:grid-cols-3' } as const;
@@ -29,21 +30,41 @@ export function PreguntaOpciones({ id, etiqueta, opciones, valor, invalida, disp
     >
       <Label className="etiqueta-pregunta">{etiqueta}</Label>
       <div className={REJILLA[disposicion]}>
-        {opciones.map((opcion) => <OpcionRadio key={opcion.id} opcion={opcion} columna={disposicion === 'likert'} />)}
+        {opciones.map((opcion) => (
+          <OpcionRadio
+            key={opcion.id}
+            opcion={opcion}
+            columna={disposicion === 'likert'}
+            seleccionada={opcion.id === valor}
+            onQuitar={() => { onCambiar(null); }}
+          />
+        ))}
       </div>
       <FieldError className="lg:col-span-2">Seleccione una opción.</FieldError>
     </RadioGroup>
   );
 }
 
-// DESIGN.md Motion 1: al elegir, una hoja brota desde el centro del control.
-function OpcionRadio({ opcion, columna }: { readonly opcion: Opcion; readonly columna: boolean }) {
+interface PropsOpcionRadio {
+  readonly opcion: Opcion;
+  readonly columna: boolean;
+  readonly seleccionada: boolean;
+  readonly onQuitar: () => void;
+}
+
+// DESIGN.md Motion 1: al elegir, una flor de loto brota desde el centro del control.
+// Un radio ya marcado no emite cambio: el clic lo quita. Con el ratón llega al texto, no al input; con la barra
+// espaciadora llega al input. Quitar es idempotente, así que un doble aviso no cambia el resultado.
+function OpcionRadio({ opcion, columna, seleccionada, onQuitar }: PropsOpcionRadio) {
+  const alPulsar = () => {
+    if (seleccionada) onQuitar();
+  };
   return (
-    <Radio value={opcion.id} className={`opcion-respuesta ${columna ? 'opcion-respuesta--columna' : ''}`}>
+    <Radio value={opcion.id} onClick={alPulsar} className={`opcion-respuesta ${columna ? 'opcion-respuesta--columna' : ''}`}>
       <Radio.Content>
         <Radio.Control>
           <Radio.Indicator>
-            {({ isSelected }) => (isSelected ? <Hoja rellena className="size-6 animate-brotar text-brand" /> : null)}
+            {({ isSelected }) => (isSelected ? <FlorLoto className="size-6 animate-brotar text-brand" /> : null)}
           </Radio.Indicator>
         </Radio.Control>
         <span>{opcion.texto}</span>

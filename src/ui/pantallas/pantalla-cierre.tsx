@@ -27,7 +27,7 @@ interface PropsPantallaCierre {
 export function PantallaCierre({ motivo }: PropsPantallaCierre) {
   const mensaje = MENSAJES[motivo];
   return (
-    <MarcoPaso titulo={mensaje.titulo} antetitulo={null} ilustracion={<AbanicoHojas animacion="convergencia" />}>
+    <MarcoPaso titulo={mensaje.titulo} antetitulo={null} ilustracion={<AbanicoHojas />}>
       <div className="mx-auto flex max-w-[60ch] flex-col gap-4 text-center">
         {mensaje.parrafos.map((parrafo) => <p key={parrafo}>{parrafo}</p>)}
       </div>

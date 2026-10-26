@@ -1,14 +1,10 @@
 import { Hoja } from './hoja';
-import { useAnimacionHojas, type AnimacionHojas } from './movimiento/use-animacion-hojas';
+import { useConvergenciaHojas } from './movimiento/use-animacion-hojas';
 
 const ANGULOS = [-66, -40, -14, 14, 40, 66] as const;
 
-interface PropsAbanicoHojas {
-  readonly animacion: AnimacionHojas;
-}
-
-export function AbanicoHojas({ animacion }: PropsAbanicoHojas) {
-  const raiz = useAnimacionHojas<HTMLDivElement>(animacion);
+export function AbanicoHojas() {
+  const raiz = useConvergenciaHojas<HTMLDivElement>();
   return (
     <div ref={raiz} aria-hidden="true" className="relative h-20 w-40">
       {ANGULOS.map((angulo) => (

@@ -9,10 +9,10 @@ const FORMATO_ID = /^(A-C-[0-9]{2}|A-D[1-6]-[0-9]{2}|A-AB-[0-9]{2}|B-[0-9]{2})$/
 const todas = [...SECCIONES_INSTRUMENTO_A, SECCION_LIDERES].flatMap((seccion) => seccion.preguntas);
 
 describe('catálogo del cuestionario', () => {
-  it('tiene los 80 identificadores del catálogo en Supabase, únicos y con formato válido', () => {
+  it('tiene los 82 identificadores del catálogo en Supabase (80 + A-C-11 y A-C-12 de la migración 20261025120000), únicos y con formato válido', () => {
     const ids = todas.map((pregunta) => pregunta.id);
-    expect(ids).toHaveLength(80);
-    expect(new Set(ids).size).toBe(80);
+    expect(ids).toHaveLength(82);
+    expect(new Set(ids).size).toBe(82);
     expect(ids.every((id) => FORMATO_ID.test(id))).toBe(true);
   });
 

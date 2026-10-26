@@ -1,7 +1,7 @@
 import { useCallback, useReducer, useState } from 'react';
 import type { Pregunta } from '../domain/cuestionario';
 import { ESTADO_INICIAL, reducirEncuesta, seccionDelPaso } from '../domain/encuesta';
-import type { Evento } from '../domain/flujo';
+import type { Evento, Paso } from '../domain/flujo';
 import { esVisible, preguntasFaltantes, type ValorRespuesta } from '../domain/respuestas';
 
 export type ControlEncuesta = ReturnType<typeof useEncuesta>;
@@ -19,6 +19,11 @@ export function useEncuesta() {
     despachar({ tipo: 'responder', pregunta, valor });
   }, []);
 
+  const irAPaso = useCallback((paso: Paso) => {
+    setIntentos(0);
+    despachar({ tipo: 'evento', evento: { tipo: 'ir-a', paso } });
+  }, []);
+
   const seccion = seccionDelPaso(estado.paso);
   const faltantes = seccion === null ? [] : preguntasFaltantes(seccion, estado.respuestas);
   const preguntas = seccion === null ? [] : seccion.preguntas.filter((pregunta) => esVisible(pregunta, estado.respuestas));
@@ -29,5 +34,5 @@ export function useEncuesta() {
     return faltantes.length === 0;
   };
 
-  return { ...estado, seccion, preguntas, faltantes: intentos > 0 ? faltantes : [], intentos, emitir, responder, validar };
+  return { ...estado, seccion, preguntas, faltantes: intentos > 0 ? faltantes : [], intentos, emitir, irAPaso, responder, validar };
 }

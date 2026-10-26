@@ -3,8 +3,10 @@
  * de al menos 44 px (AGENTS.md §5) y opción seleccionada en el primario sólido.
  */
 @layer components {
+  /* min-height y no height: con el texto al 125 % la etiqueta puede ocupar dos líneas. */
   .button {
-    height: 48px;
+    height: auto;
+    min-height: 48px;
     padding-inline: 20px;
     border-radius: var(--radius-md);
     font-size: var(--text-label);
@@ -22,7 +24,8 @@
   }
 
   .toggle-button {
-    height: 44px;
+    height: auto;
+    min-height: 44px;
     min-width: 44px;
     border-radius: var(--radius-md);
     font-size: var(--text-body-sm);
@@ -64,6 +67,23 @@
   .input,
   .textarea {
     font-size: var(--text-body);
+  }
+
+  /* HeroUI toma el borde de --border-width-field, que el tema deja en 0: el campo quedaba blanco sobre blanco (WCAG 1.4.11). */
+  .input,
+  .textarea {
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--background);
+  }
+
+  .input {
+    min-height: 48px;
+  }
+
+  .input:focus-visible,
+  .textarea:focus-visible {
+    border-color: var(--focus);
   }
 
   .etiqueta-pregunta {
@@ -142,5 +162,29 @@
 
   [data-theme="dark"] .logo-tema-oscuro {
     display: block;
+  }
+}
+
+/*
+ * DESIGN.md Motion 6: el tema nuevo se revela en círculo desde la esquina superior derecha,
+ * donde está el botón de apariencia. 150 % cubre la diagonal completa de la ventana.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  animation: revelar var(--motion-slow) var(--ease-standard) both;
+}
+
+@keyframes revelar {
+  from {
+    clip-path: circle(0 at 100% 0);
+  }
+
+  to {
+    clip-path: circle(150% at 100% 0);
   }
 }

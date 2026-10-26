@@ -17,10 +17,7 @@ export function PantallaDecisionLider({ pendiente, errorEnvio, onAnterior, onEnv
     <MarcoPaso titulo="Terminó la encuesta de colaboradores" antetitulo={null} ilustracion={null}>
       <div className="flex max-w-[68ch] flex-col gap-4">
         <p>Gracias por sus respuestas. Falta un último paso.</p>
-        <p>
-          Si usted es líder (hace parte de la Gerencia, una subdirección, una jefatura o una coordinación, o tiene personal a
-          cargo), le pedimos responder 14 preguntas abiertas sobre la implementación del modelo EFR.
-        </p>
+        <p>Si usted es líder, por favor responda las siguientes preguntas sobre la implementación del modelo EFR.</p>
         <p>Si no es líder, ya puede enviar su encuesta.</p>
       </div>
       {errorEnvio === null ? null : <AvisoEnvio detalle={errorEnvio} />}

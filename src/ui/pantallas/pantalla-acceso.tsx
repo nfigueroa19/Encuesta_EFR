@@ -1,7 +1,7 @@
 import { Alert, Button, FieldError, Input, Label, TextField } from '@heroui/react';
 import { useState, type SyntheticEvent } from 'react';
 import type { ErrorAcceso } from '../../domain/resultados';
-import { LogoInstitucional } from '../logo-institucional';
+import { LogoBienvenida } from '../logo-bienvenida';
 import { MarcoPaso } from '../marco-paso';
 
 const MENSAJES_CAMPO = {
@@ -22,9 +22,8 @@ export function PantallaAcceso({ pendiente, error, onIngresar }: PropsPantallaAc
     onIngresar(cedula);
   };
   const errorCampo = error === 'conexion' ? null : error;
-  const logo = <LogoInstitucional variante="bienvenida" className="h-36 w-auto animate-aparecer md:h-44" />;
   return (
-    <MarcoPaso titulo="Diagnóstico EFR 2026" antetitulo={null} ilustracion={logo}>
+    <MarcoPaso titulo="Diagnóstico EFR 2026" antetitulo={null} ilustracion={<LogoBienvenida />}>
       <p className="mx-auto max-w-[60ch] text-center">
         Encuesta para el personal de planta del Hospital Susana López de Valencia. Ingrese su número de cédula para comenzar.
       </p>
