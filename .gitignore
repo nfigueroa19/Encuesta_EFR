@@ -11,7 +11,7 @@ dist/
 *.pem
 *.key
 
-# El repo solo lleva lo que Render necesita para construir la app (despliegue-render-efr).
+# El repo solo lleva lo que Render necesita para construir la app (decision-hosting-render-sitio-estatico).
 # La bóveda, la gobernanza de agentes y los logos originales se quedan en la carpeta local.
 /_Segundo_Cerebro/
 /.obsidian/

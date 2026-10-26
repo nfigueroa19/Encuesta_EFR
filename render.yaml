@@ -1,5 +1,5 @@
 # Sitio estático de la encuesta EFR en la CDN de Render. El backend es Supabase (RPC + RLS):
-# Render solo entrega index.html y los recursos de dist/ (despliegue-render-efr).
+# Render solo entrega index.html y los recursos de dist/ (decision-hosting-render-sitio-estatico).
 services:
   - type: web
     runtime: static
