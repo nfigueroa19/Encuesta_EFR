@@ -11,6 +11,9 @@ services:
     staticPublishPath: ./dist
     previews:
       generation: "off"
+    # La encuesta solo se publica en el dominio institucional: encuesta-efr.onrender.com
+    # responde 404. El CNAME de Cloudflare sigue apuntando a ese host para enrutar.
+    renderSubdomainPolicy: disabled
     domains:
       - efr.hosusana.com
     envVars:
