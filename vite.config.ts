@@ -13,9 +13,8 @@ const ENCABEZADOS_DESARROLLO = {
   'X-Frame-Options': 'DENY',
 };
 
-// Bundle de producción sin mapas de fuente, comentarios, console ni debugger, con nombres
-// acortados. Los avisos de licencia de las dependencias van a .vite/license.md en lugar de
-// quedar en línea, para cumplir sus licencias sin dejarlos dentro del código.
+// comments: false también borra los avisos de licencia de las dependencias; license: true los
+// conserva en .vite/license.md para cumplir sus licencias.
 const BUILD_PRODUCCION = {
   sourcemap: false,
   minify: 'oxc',
