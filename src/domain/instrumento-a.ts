@@ -42,7 +42,10 @@ const CARACTERIZACION: readonly Pregunta[] = [
     { id: 'si', texto: 'Sí' }, { id: 'no', texto: 'No' },
   ] },
   { tipo: 'texto-corto', id: 'A-C-07', enunciado: '¿Cuál es tu género?', visibleSi: null },
-  { tipo: 'texto-corto', id: 'A-C-08', enunciado: '¿En qué rango de edad te encuentras?', visibleSi: null },
+  { tipo: 'unica', id: 'A-C-08', enunciado: '¿En qué rango de edad te encuentras?', opciones: [
+    { id: '18-a-25', texto: '18 a 25 años' }, { id: '26-a-35', texto: '26 a 35 años' }, { id: '36-a-45', texto: '36 a 45 años' },
+    { id: '46-a-55', texto: '46 a 55 años' }, { id: '56-a-65', texto: '56 a 65 años' }, { id: 'mas-de-65', texto: 'Más de 65 años' },
+  ] },
   { tipo: 'texto-corto', id: 'A-C-09', enunciado: '¿Cuál es tu estado civil?', visibleSi: null },
   { tipo: 'texto-corto', id: 'A-C-10', enunciado: '¿Cuál es el parentesco de las personas que dependen económicamente de ti?',
     visibleSi: { pregunta: 'A-C-06', opcion: 'si' } },

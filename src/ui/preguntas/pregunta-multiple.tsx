@@ -23,7 +23,7 @@ export function PreguntaMultiple({ id, etiqueta, opciones, valor, invalida, onCa
     >
       <Label className="etiqueta-pregunta">{etiqueta}</Label>
       <Description>Puede marcar varias opciones.</Description>
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-2 @md/pregunta:grid-cols-2 @3xl/pregunta:grid-cols-3">
         {opciones.map((opcion) => (
           <Checkbox key={opcion.id} value={opcion.id} className="opcion-respuesta">
             <Checkbox.Content>

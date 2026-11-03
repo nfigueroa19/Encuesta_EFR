@@ -14,7 +14,16 @@ export interface PropsCampoPregunta {
 
 const conNumero = (numero: number | null, enunciado: string) => (numero === null ? enunciado : `${String(numero)}. ${enunciado}`);
 
-export function CampoPregunta({ pregunta, valor, invalida, onResponder }: PropsCampoPregunta) {
+// Cada pregunta es un contenedor: su disposición depende del ancho de la tarjeta y no del de la ventana.
+export function CampoPregunta(props: PropsCampoPregunta) {
+  return (
+    <div className="@container/pregunta">
+      <ControlPregunta {...props} />
+    </div>
+  );
+}
+
+function ControlPregunta({ pregunta, valor, invalida, onResponder }: PropsCampoPregunta) {
   const comunes = { id: pregunta.id, invalida };
   const opcion = valor?.tipo === 'opcion' ? valor.opcion : null;
   const elegir = (elegida: string | null) => {

@@ -31,9 +31,9 @@ export function PantallaSeccion(props: PropsPantallaSeccion) {
   const idsFaltantes = new Set(faltantes.map((pregunta) => pregunta.id));
   return (
     <MarcoPaso titulo={seccion.titulo} antetitulo={props.antetitulo} ilustracion={null}>
-      {seccion.indicacion === null ? null : <p className="text-muted">{seccion.indicacion}</p>}
+      {seccion.indicacion === null ? null : <p className="max-w-[75ch] text-muted">{seccion.indicacion}</p>}
       <ResumenFaltantes key={props.intentos} faltantes={faltantes} />
-      <div className="flex flex-col gap-3">
+      <div className="rejilla-preguntas">
         {preguntas.map((pregunta) => (
           <CampoPregunta
             key={pregunta.id}

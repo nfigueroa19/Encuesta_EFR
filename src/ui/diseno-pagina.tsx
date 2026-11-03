@@ -16,7 +16,7 @@ export function DisenoPagina({ progreso, apariencia, pie, children }: PropsDisen
       </a>
       <Encabezado progreso={progreso} apariencia={apariencia} />
       {/* overflow-x-clip: la entrada de cada paso (DESIGN.md Motion 4) desplaza 24 px y no debe crear barra horizontal. */}
-      <main id="contenido" tabIndex={-1} className="mx-auto flex w-full max-w-content flex-col gap-12 overflow-x-clip px-4 py-10 outline-none md:px-6">
+      <main id="contenido" tabIndex={-1} className="mx-auto flex w-full max-w-content flex-col gap-12 overflow-x-clip px-4 py-10 outline-none md:px-6 lg:px-10">
         {children}
       </main>
       {pie}

@@ -141,14 +141,24 @@
     border: 2px solid var(--accent-foreground);
   }
 
-  /* En escritorio las cinco opciones Likert van en columnas, con el control sobre el texto. */
-  @media (width >= 64rem) {
+  /* Con la tarjeta ancha las cinco opciones Likert van en columnas, con el control sobre el texto. */
+  @container pregunta (width >= 36rem) {
     .opcion-respuesta--columna .radio__content {
       flex-direction: column;
       justify-content: center;
       text-align: center;
       height: 100%;
     }
+  }
+
+  /*
+   * Una sola columna de preguntas: las columnas de preguntas rompen el recorrido vertical y quedaban
+   * amontonadas (revisión del 2026-11-03). El ancho extra se aprovecha con la escala de la raíz (index.css).
+   */
+  .rejilla-preguntas {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   /* Logos con texto azul marino: versión blanca en el tema oscuro (ui/logo-institucional.tsx). */

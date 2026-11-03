@@ -14,10 +14,10 @@ interface PropsPreguntaOpciones {
   readonly onCambiar: (opcion: string | null) => void;
 }
 
-const REJILLA = { likert: 'grid gap-2 lg:grid-cols-5', lista: 'grid gap-2 sm:grid-cols-2 lg:grid-cols-3' } as const;
+const REJILLA = { likert: 'grid gap-2 @xl/pregunta:grid-cols-5', lista: 'grid gap-2 @md/pregunta:grid-cols-2 @3xl/pregunta:grid-cols-3' } as const;
 
 export function PreguntaOpciones({ id, etiqueta, opciones, valor, invalida, disposicion, onCambiar }: PropsPreguntaOpciones) {
-  const fila = disposicion === 'likert' ? 'lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-center lg:gap-6' : '';
+  const fila = disposicion === 'likert' ? '@5xl/pregunta:grid @5xl/pregunta:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] @5xl/pregunta:items-center @5xl/pregunta:gap-6' : '';
   return (
     <RadioGroup
       id={`pregunta-${id}`}
@@ -40,7 +40,7 @@ export function PreguntaOpciones({ id, etiqueta, opciones, valor, invalida, disp
           />
         ))}
       </div>
-      <FieldError className="lg:col-span-2">Seleccione una opción.</FieldError>
+      <FieldError className="@5xl/pregunta:col-span-2">Seleccione una opción.</FieldError>
     </RadioGroup>
   );
 }

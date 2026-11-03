@@ -11,13 +11,23 @@
 @import "./componentes.css";
 
 @layer base {
-  /* Tamaño de texto elegido en el panel de apariencia; todo el diseño está en rem y escala con la raíz. */
+  /*
+   * Todo el diseño está en rem, así que escalar la raíz escala la interfaz completa.
+   * Base de 16 px hasta 1920 × 1080; por encima crece con el ancho y con el alto de la ventana
+   * (el menor de los dos, para que un ultrawide de 5120 × 2160 quede como una pantalla de 2560 × 1080 a 200 %).
+   * --factor-texto es la preferencia de la persona en el panel de apariencia.
+   */
+  html {
+    --factor-texto: 1;
+    font-size: calc(max(16px, min(0.8333vw, 1.4815vh)) * var(--factor-texto));
+  }
+
   html[data-tamano-texto="grande"] {
-    font-size: 112.5%;
+    --factor-texto: 1.125;
   }
 
   html[data-tamano-texto="muy-grande"] {
-    font-size: 125%;
+    --factor-texto: 1.25;
   }
 
   body {

@@ -117,7 +117,7 @@ describe('respuestasParaEnvio', () => {
     const genero = caracterizacion.preguntas.find((pregunta) => pregunta.id === 'A-C-07') as Pregunta;
     let respuestas = conDependientes('no');
     respuestas = registrarRespuesta(respuestas, parentesco, { tipo: 'texto', texto: 'Madre' });
-    respuestas = registrarRespuesta(respuestas, caracterizacion.preguntas.find((p) => p.id === 'A-C-08') as Pregunta, { tipo: 'texto', texto: ' ' });
+    respuestas = registrarRespuesta(respuestas, caracterizacion.preguntas.find((p) => p.id === 'A-C-09') as Pregunta, { tipo: 'texto', texto: ' ' });
     respuestas = registrarRespuesta(respuestas, genero, { tipo: 'texto', texto: '  Femenino ' });
     const envio = respuestasParaEnvio([caracterizacion], respuestas);
     expect(envio.has('A-C-10')).toBe(false);
