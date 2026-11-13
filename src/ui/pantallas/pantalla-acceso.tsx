@@ -10,7 +10,7 @@ const MENSAJES_CAMPO = {
   'no-habilitado': 'No encontramos esta cédula en el registro de personal. Revise el número o comuníquese con Talento Humano.',
 } as const;
 
-const URL_POLITICA_DATOS = 'https://hosusana.gov.co/Transparencia/PoliticasLineamientos/Pol%C3%ADtica%20tratamiento%20de%20datos.pdf';
+const URL_POLITICA_DATOS = 'https://www.hosusana.gov.co/Transparencia/PoliticasLineamientos/Pol%C3%ADtica%20de%20Privacidad%20y%20Condiciones%20de%20Uso%20de%20Sitio%20Web.pdf';
 
 interface PropsPantallaAcceso {
   readonly pendiente: boolean;
