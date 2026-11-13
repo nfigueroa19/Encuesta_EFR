@@ -1,0 +1,91 @@
+/*
+ * Colores del panel de resultados. Escala divergente: dos tonos cálidos para el desacuerdo, gris
+ * tintado para la opción neutra y dos verdes de la marca para el acuerdo (Heiberger y Robbins, 2014).
+ * El color nunca va solo: cada barra lleva leyenda y porcentajes en texto (AGENTS.md §5).
+ */
+@layer base {
+  :root,
+  [data-theme="light"] {
+    --efr-likert-1: #8c2d19;
+    --efr-likert-2: #d4775c;
+    --efr-likert-3: #b9c4bc;
+    --efr-likert-4: #62a927;
+    --efr-likert-5: #00692e;
+    --efr-barra: #00692e;
+    --efr-pista: #e4ebe2;
+  }
+
+  [data-theme="dark"] {
+    --efr-likert-1: #ff8a80;
+    --efr-likert-2: #c4664f;
+    --efr-likert-3: #5e7366;
+    --efr-likert-4: #5f9e3c;
+    --efr-likert-5: #9ad36a;
+    --efr-barra: #7cc24a;
+    --efr-pista: #24362b;
+  }
+}
+
+@layer components {
+  .tarjeta-panel {
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    padding: 16px;
+  }
+
+  .tabla-envios {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-body-sm);
+  }
+
+  .tabla-envios :is(th, td) {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--separator);
+  }
+
+  .tabla-envios th {
+    font-weight: var(--text-label--font-weight);
+    color: var(--muted);
+  }
+
+  .tabla-envios .numero {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Separación de 2 px entre segmentos, sin borde alrededor de cada uno. */
+  .barra-segmentos {
+    display: flex;
+    gap: 2px;
+    height: 20px;
+  }
+
+  .barra-segmentos > span:first-child {
+    border-radius: 4px 0 0 4px;
+  }
+
+  .barra-segmentos > span:last-child {
+    border-radius: 0 4px 4px 0;
+  }
+
+  .linea-centro {
+    position: absolute;
+    inset-block: -4px;
+    left: 50%;
+    border-left: 1px solid var(--muted);
+  }
+
+  .barra-pista {
+    height: 12px;
+    border-radius: 4px;
+    background: var(--efr-pista);
+  }
+
+  .barra-relleno {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--efr-barra);
+  }
+}

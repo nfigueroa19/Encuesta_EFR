@@ -29,7 +29,7 @@ services:
       # (id react-aria-pressable-style); si una actualización lo cambia, la consola lo reporta.
       - path: /*
         name: Content-Security-Policy
-        value: "default-src 'none'; script-src 'self'; style-src 'self' 'sha256-38RhXrc7EdReTKsOm23ZPOCUgniTUUcjky8QOOrQx6o='; img-src 'self' data:; font-src 'self'; connect-src https://fbujqbeylertkpcbcygd.supabase.co; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"
+        value: "default-src 'none'; script-src 'self'; style-src 'self' 'sha256-38RhXrc7EdReTKsOm23ZPOCUgniTUUcjky8QOOrQx6o='; img-src 'self' data:; font-src 'self'; connect-src https://fbujqbeylertkpcbcygd.supabase.co wss://fbujqbeylertkpcbcygd.supabase.co; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"
       - path: /*
         name: Strict-Transport-Security
         value: max-age=31536000; includeSubDomains
@@ -54,3 +54,10 @@ services:
       - path: /index.html
         name: Cache-Control
         value: no-cache
+      # Panel de resultados: fuera de buscadores y sin copias en caché (datos nominales).
+      - path: /panel/*
+        name: Cache-Control
+        value: no-store
+      - path: /panel/*
+        name: X-Robots-Tag
+        value: noindex, nofollow
