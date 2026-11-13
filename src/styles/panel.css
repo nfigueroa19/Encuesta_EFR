@@ -1,6 +1,6 @@
 /*
- * Colores del panel de resultados. Escala divergente: dos tonos cálidos para el desacuerdo, gris
- * tintado para la opción neutra y dos verdes de la marca para el acuerdo (Heiberger y Robbins, 2014).
+ * Colores del panel de resultados. Escala de la Likert: dos tonos cálidos para el desacuerdo, gris
+ * tintado para la opción neutra y dos verdes de la marca para el acuerdo.
  * El color nunca va solo: cada barra lleva leyenda y porcentajes en texto (AGENTS.md §5).
  */
 @layer base {
@@ -55,26 +55,56 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Separación de 2 px entre segmentos, sin borde alrededor de cada uno. */
-  .barra-segmentos {
+  /*
+   * Columnas Likert: tres filas compartidas (cifras, columna, nombre) con subgrid, para que las cinco
+   * columnas empiecen y terminen a la misma altura aunque el texto ocupe distinto número de líneas.
+   */
+  .grafica-columnas {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-rows: auto 10rem auto;
+    column-gap: 8px;
+    row-gap: 6px;
+  }
+
+  .grafica-columnas > li {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    justify-items: center;
+    align-items: end;
+    text-align: center;
+    /* En móvil "Parcialmente" no cabe en la columna: guion si el navegador sabe dividir en español; si no, se corta la palabra. */
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+
+  .grafica-columnas .columna-nombre {
+    align-self: start;
+  }
+
+  /* Teléfono: cinco columnas de unos 55 px. Texto de 13 px y corte de palabra para que nada se monte. */
+  @media (width < 40rem) {
+    .grafica-columnas > li :is(.text-body-sm, .text-label) {
+      font-size: 0.8125rem;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .columna-pista {
     display: flex;
-    gap: 2px;
-    height: 20px;
+    align-items: flex-end;
+    width: 100%;
+    max-width: 4.5rem;
+    height: 100%;
+    border-radius: 4px 4px 0 0;
+    background: var(--efr-pista);
+    border-bottom: 1px solid var(--muted);
   }
 
-  .barra-segmentos > span:first-child {
-    border-radius: 4px 0 0 4px;
-  }
-
-  .barra-segmentos > span:last-child {
-    border-radius: 0 4px 4px 0;
-  }
-
-  .linea-centro {
-    position: absolute;
-    inset-block: -4px;
-    left: 50%;
-    border-left: 1px solid var(--muted);
+  .columna-relleno {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
   }
 
   .barra-pista {

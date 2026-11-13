@@ -24,7 +24,6 @@ export interface TextoAbierto {
 
 export interface DatosPanel {
   readonly envios: readonly Envio[];
-  readonly habilitados: number;
   readonly conteos: readonly ConteoOpcion[];
   readonly textos: readonly TextoAbierto[];
 }

@@ -16,10 +16,6 @@ export function TarjetasDimensiones({ resultados }: { readonly resultados: reado
   return (
     <section aria-labelledby="titulo-dimensiones" className="flex flex-col gap-3">
       <h2 id="titulo-dimensiones" className="text-heading text-titulo">Resultado por dimensión</h2>
-      <p className="text-body-sm text-muted">
-        Preliminar: solo la voz del colaborador (Instrumento A), con Totalmente de acuerdo = 5 y Totalmente en desacuerdo = 1.
-        Falta la ponderación con la evidencia institucional y la voz de líderes.
-      </p>
       <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {resultados.map((resultado) => <TarjetaDimension key={resultado.dimension} resultado={resultado} />)}
       </ul>

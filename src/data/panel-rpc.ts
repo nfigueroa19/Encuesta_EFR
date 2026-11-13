@@ -6,7 +6,7 @@ export type ResultadoDatos =
   | { readonly tipo: 'sin-permiso' }
   | { readonly tipo: 'error'; readonly detalle: string };
 
-type FuncionPanel = 'efr_panel_envios' | 'efr_panel_habilitados' | 'efr_panel_conteos' | 'efr_panel_textos';
+type FuncionPanel = 'efr_panel_envios' | 'efr_panel_conteos' | 'efr_panel_textos';
 
 class ErrorPanel extends Error {
   readonly sinPermiso: boolean;
@@ -59,10 +59,8 @@ const aConteo = (fila: Fila): ConteoOpcion => ({
 const aTexto = (fila: Fila): TextoAbierto => ({ preguntaId: texto(fila.pregunta_id), texto: texto(fila.texto) });
 
 async function cargar(): Promise<DatosPanel> {
-  const [envios, habilitados, conteos, textos] = await Promise.all([
-    filas('efr_panel_envios'), llamar('efr_panel_habilitados'), filas('efr_panel_conteos'), filas('efr_panel_textos'),
-  ]);
-  return { envios: envios.map(aEnvio), habilitados: numero(habilitados), conteos: conteos.map(aConteo), textos: textos.map(aTexto) };
+  const [envios, conteos, textos] = await Promise.all([filas('efr_panel_envios'), filas('efr_panel_conteos'), filas('efr_panel_textos')]);
+  return { envios: envios.map(aEnvio), conteos: conteos.map(aConteo), textos: textos.map(aTexto) };
 }
 
 export async function cargarDatosPanel(): Promise<ResultadoDatos> {

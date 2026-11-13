@@ -2,7 +2,7 @@ import type { Pregunta, Seccion } from '../../domain/cuestionario';
 import { ESCALA_LIKERT } from '../../domain/escala-likert';
 import type { ConteoOpcion, TextoAbierto } from '../../domain/panel/datos-panel';
 import { distribucion } from '../../domain/panel/distribucion';
-import { BarraLikert, LeyendaLikert } from './barra-likert';
+import { ColumnasLikert, LeyendaLikert } from './columnas-likert';
 import { BarrasOpciones } from './barras-opciones';
 import { ListaTextos } from './lista-textos';
 
@@ -11,13 +11,11 @@ interface DatosRespuestas {
   readonly textos: readonly TextoAbierto[];
 }
 
-const LEYENDA = ESCALA_LIKERT.map((opcion) => opcion.texto).reverse();
-
 export function ResultadosSecciones({ secciones, datos }: { readonly secciones: readonly Seccion[]; readonly datos: DatosRespuestas }) {
   return (
     <section aria-labelledby="titulo-respuestas" className="flex flex-col gap-6">
       <h2 id="titulo-respuestas" className="text-heading text-titulo">Respuestas por pregunta</h2>
-      <LeyendaLikert textos={LEYENDA} />
+      <LeyendaLikert opciones={ESCALA_LIKERT} />
       {secciones.map((seccion) => (
         <section key={seccion.id} aria-labelledby={`seccion-${seccion.id}`} className="flex flex-col gap-3">
           <h3 id={`seccion-${seccion.id}`} className="text-label text-brand">{seccion.titulo}</h3>
@@ -41,7 +39,7 @@ function ResultadoPregunta({ pregunta, datos }: { readonly pregunta: Pregunta; r
 }
 
 function Visualizacion({ pregunta, datos }: { readonly pregunta: Pregunta; readonly datos: DatosRespuestas }) {
-  if (pregunta.tipo === 'likert') return <BarraLikert distribucion={distribucion(datos.conteos, pregunta.id, ESCALA_LIKERT)} />;
+  if (pregunta.tipo === 'likert') return <ColumnasLikert distribucion={distribucion(datos.conteos, pregunta.id, ESCALA_LIKERT)} />;
   if (pregunta.tipo === 'unica' || pregunta.tipo === 'multiple') {
     return <BarrasOpciones distribucion={distribucion(datos.conteos, pregunta.id, pregunta.opciones)} />;
   }

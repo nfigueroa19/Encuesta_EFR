@@ -24,6 +24,7 @@
     "@react-aria/ssr": "3.10.1",
     "@react-aria/utils": "3.34.1",
     "@supabase/supabase-js": "2.118.0",
+    "fflate": "0.8.3",
     "motion": "14.6.0",
     "react": "19.2.9",
     "react-aria": "3.53.1",

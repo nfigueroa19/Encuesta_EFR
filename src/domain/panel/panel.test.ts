@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import type { ConteoOpcion, Envio } from './datos-panel';
-import { distribucion, inicioBarraDivergente } from './distribucion';
-import { csvEnvios, resumenParticipacion } from './participacion';
+import { distribucion } from './distribucion';
+import { partesLibroEnvios } from './excel-envios';
+import { filtrarEnvios, resumenParticipacion } from './participacion';
 import { nivelSemaforo, porcentajeDimension, promedioLikert } from './puntaje-efr';
 import { correoDeUsuario } from './usuario-panel';
 
@@ -41,12 +42,6 @@ describe('distribución', () => {
     expect(resultado.respondientes).toBe(4);
     expect(resultado.opciones.map((item) => item.porcentaje)).toEqual([100, 0, 25]);
   });
-
-  it('centra la opción neutra en el 50 %', () => {
-    const items = [10, 20, 40, 20, 10].map((porcentaje, indice) => ({ opcion: { id: String(indice), texto: '' }, total: 0, porcentaje }));
-    // 30 % en desacuerdo + la mitad del 40 % neutro = 50 puntos a la izquierda del centro, a media escala.
-    expect(inicioBarraDivergente(items)).toBe(25);
-  });
 });
 
 describe('participación', () => {
@@ -56,10 +51,24 @@ describe('participación', () => {
   ];
 
   it('cuenta envíos de hoy y líderes', () => {
-    expect(resumenParticipacion(envios, 115, '2026-11-13')).toMatchObject({ respondieron: 2, hoy: 1, lideres: 1 });
+    expect(resumenParticipacion(envios, '2026-11-13')).toMatchObject({ respondieron: 2, total: 99, hoy: 1, lideres: 1 });
   });
 
-  it('neutraliza fórmulas y escapa comillas en el CSV', () => {
-    expect(csvEnvios(envios).split('\r\n')[1]).toBe('"1";"\'=HYPERLINK(""x"")";"Sí";"2026-11-13"');
+  it('busca por cédula con puntos o por nombre sin tildes', () => {
+    const lista: Envio[] = [
+      { cedula: 1061234567, nombre: 'María Gómez', respondioLideres: false, enviadoEl: '2026-11-13' },
+      { cedula: 34567890, nombre: 'Juan Pérez', respondioLideres: true, enviadoEl: '2026-11-12' },
+    ];
+    expect(filtrarEnvios(lista, '1.061.234').map((envio) => envio.cedula)).toEqual([1061234567]);
+    expect(filtrarEnvios(lista, 'gomez').map((envio) => envio.cedula)).toEqual([1061234567]);
+    expect(filtrarEnvios(lista, '  ')).toHaveLength(2);
+    expect(filtrarEnvios(lista, 'ana')).toHaveLength(0);
+  });
+
+  it('arma la hoja de Excel con textos escapados y sin fórmulas', () => {
+    const hoja = partesLibroEnvios(envios)['xl/worksheets/sheet1.xml'] ?? '';
+    expect(hoja).toContain('<c><v>1</v></c><c t="inlineStr" s="0"><is><t xml:space="preserve">=HYPERLINK(&quot;x&quot;)</t></is></c>');
+    expect(hoja).not.toContain('<f>');
+    expect(hoja.match(/<row>/g)).toHaveLength(3);
   });
 });

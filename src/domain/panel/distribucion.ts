@@ -25,14 +25,3 @@ export function distribucion(conteos: readonly ConteoOpcion[], preguntaId: strin
     }),
   };
 }
-
-// Barra divergente (Heiberger y Robbins, 2014): el centro de la opción neutra queda en el centro del eje.
-// El eje va de 100 % en desacuerdo (izquierda) a 100 % de acuerdo (derecha), así que la barra completa
-// ocupa la mitad del ancho. Recibe las opciones de desacuerdo a acuerdo y devuelve dónde empieza la barra,
-// en porcentaje del ancho del eje.
-export function inicioBarraDivergente(desacuerdoAAcuerdo: readonly PorcentajeOpcion[]): number {
-  const mitad = Math.floor(desacuerdoAAcuerdo.length / 2);
-  const negativos = desacuerdoAAcuerdo.slice(0, mitad).reduce((suma, item) => suma + item.porcentaje, 0);
-  const neutro = desacuerdoAAcuerdo[mitad]?.porcentaje ?? 0;
-  return 50 - (negativos + neutro / 2) / 2;
-}
