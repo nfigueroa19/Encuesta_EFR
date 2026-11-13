@@ -5,7 +5,7 @@ export function PiePagina() {
   return (
     <footer className="mt-16 border-t border-separator bg-surface">
       <div className="mx-auto flex max-w-content flex-col items-center gap-6 px-4 py-8 text-center md:px-6 lg:px-10">
-        <p className="text-body-sm text-muted">Desarrollado por el área de Talento Humano y la Unidad de Inteligencia Artificial</p>
+        <p className="text-body-sm text-muted">Desarrollado por el área de Talento Humano</p>
         <address className="text-body-sm text-muted not-italic">
           Hospital Susana López de Valencia E.S.E.
           <br />
